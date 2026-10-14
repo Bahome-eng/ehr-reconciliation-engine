@@ -673,7 +673,37 @@ MozAppearance: "none"// 🔥 placeholder effect
 </p>
 
 <div style={terminalBox}>
-  {typedText}
+  {typedText
+    .split(/\s*-\s*(?=Reason\s+\d+\s*:)/i)
+    .filter((reason) => reason.trim())
+    .map((reason, index) => {
+      const match = reason.match(/^(Reason\s+\d+:)\s*(.*)/is);
+
+      return (
+        <div
+          key={index}
+          style={{
+            marginBottom: "16px",
+            lineHeight: "1.7",
+            paddingBottom: "12px",
+            borderBottom: "1px solid #334155"
+          }}
+        >
+          {match ? (
+            <>
+              <strong style={{ color: "#38bdf8" }}>
+                {match[1]}
+              </strong>
+              <span style={{ display: "block", marginTop: "5px" }}>
+                {match[2]}
+              </span>
+            </>
+          ) : (
+            reason
+          )}
+        </div>
+      );
+    })}
 </div>
 
     {/* 3️⃣ METRICS */}
